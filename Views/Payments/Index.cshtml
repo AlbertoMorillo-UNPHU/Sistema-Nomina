@@ -4,104 +4,83 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Salarios</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.GrossPay)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PaymentPeriodFrom)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PaymentPeriodTo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ISR)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AFP)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ARS)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ARL)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TSS)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.INFOTEP)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Retirement)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NetPay)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreateDateTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Employee)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.GrossPay)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PaymentPeriodFrom)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PaymentPeriodTo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ISR)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AFP)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ARS)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ARL)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TSS)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.INFOTEP)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Retirement)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NetPay)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreateDateTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Employee.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="p-3 col-11">
+    <p>
+        <a class="btn btn-success asp-action="Create">Crear</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.GrossPay)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ISR)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AFP)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ARS)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ARL)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TSS)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.INFOTEP)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NetPay)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Employee)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.GrossPay)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ISR)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AFP)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ARS)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ARL)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TSS)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.INFOTEP)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NetPay)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Employee.NombreCompleto)
+                    </td>
+                    <td>
+                        <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.Id">Editar</a>
+                        <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Id">Detalle</a>
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Borrar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

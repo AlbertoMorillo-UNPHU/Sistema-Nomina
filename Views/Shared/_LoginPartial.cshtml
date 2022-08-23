@@ -12,8 +12,7 @@
         <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
             <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
         </form>
-        <ul>@Html.ActionLink("Empleados", "Index", "Employees")</ul>
-        <ul>@Html.ActionLink("Pagos", "Index", "Payments")</ul>
+
     </li>
 }
 else

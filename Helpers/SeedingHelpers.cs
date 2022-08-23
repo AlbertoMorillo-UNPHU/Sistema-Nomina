@@ -1,10 +1,47 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static SistemaNomina.Helpers.StatesGenerator;
 
 namespace SistemaNomina.Helpers
 {
+	public static class ContextSeed
+	{
+		public static async Task SeedRolesAsync(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+		{
+			await roleManager.CreateAsync(new IdentityRole(Roles.ADMIN.ToString()));
+			await roleManager.CreateAsync(new IdentityRole(Roles.CONTABLE.ToString()));
+			await roleManager.CreateAsync(new IdentityRole(Roles.USUARIO.ToString()));
+		}
+
+		public static async Task SeedSuperAdminAsync(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+		{
+			var defaultUser = new IdentityUser
+			{
+				UserName = "superadmin",
+				NormalizedUserName = "SUPERADMIN",
+				NormalizedEmail = "AMORILLOAVILA25@HOTMAIL.COM",
+				Email = "amorilloavila25@hotmail.com",
+				EmailConfirmed = true,
+				TwoFactorEnabled = true,
+				PhoneNumberConfirmed = true
+			};
+			if (userManager.Users.All(u => u.Id != defaultUser.Id))
+			{
+				var user = await userManager.FindByEmailAsync(defaultUser.Email);
+				if (user == null)
+				{
+					await userManager.CreateAsync(defaultUser, "123Pa$$word.");
+					await userManager.AddToRoleAsync(defaultUser, Roles.ADMIN.ToString());
+					await userManager.AddToRoleAsync(defaultUser, Roles.CONTABLE.ToString());
+					await userManager.AddToRoleAsync(defaultUser, Roles.USUARIO.ToString());
+				}
+
+			}
+		}
+	}
 	public static class StatesGenerator
 	{
 		public class State
@@ -23,6 +60,13 @@ namespace SistemaNomina.Helpers
 			{
 				return string.Format("{0} - {1}", Abbreviation, Name);
 			}
+		}
+
+		public enum Roles
+		{
+			ADMIN,
+			CONTABLE,
+			USUARIO,
 		}
 
 		public static List<State> List = new List<State> {

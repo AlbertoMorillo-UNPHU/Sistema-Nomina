@@ -1,77 +1,86 @@
 ﻿@model IEnumerable<SistemaNomina.Models.Employee>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Lista Empleados";
 }
 
-<h1>Index</h1>
+<h1>Empleados</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.SSN)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AFP)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ISR)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ARS)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RetirementPercent)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreateDateTime)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SSN)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AFP)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ISR)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ARS)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RetirementPercent)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreateDateTime)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="card p-4">
+    <p>
+        <a class="btn btn-success" asp-action="Create">Crear nuevo empleado</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LastName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.SSN)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AFP)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ISR)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ARS)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Direccion)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FechaNacimiento)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Puesto)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SSN)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AFP)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ISR)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ARS)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Direccion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaNacimiento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Puesto)
+                </td>
+                <td>
+                    <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.Id">Editar</a>
+                    <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Id">Detalle</a>
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Borrar</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

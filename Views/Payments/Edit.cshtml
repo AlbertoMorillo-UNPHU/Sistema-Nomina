@@ -12,15 +12,13 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
             <div class="form-group">
                 <label asp-for="EmpId" class="control-label"></label>
                 <select asp-for="EmpId" class="form-control" asp-items="ViewBag.EmpId"></select>
-                <span asp-validation-for="EmpId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="GrossPay" class="control-label"></label>
-                <input asp-for="GrossPay" class="form-control" />
+                <input asp-for="GrossPay" id="GrossPay" class="form-control" />
                 <span asp-validation-for="GrossPay" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -35,60 +33,77 @@
             </div>
             <div class="form-group">
                 <label asp-for="ISR" class="control-label"></label>
-                <input asp-for="ISR" class="form-control" />
+                <input asp-for="ISR" id="ISR" class="form-control" />
                 <span asp-validation-for="ISR" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="AFP" class="control-label"></label>
-                <input asp-for="AFP" class="form-control" />
+                <input asp-for="AFP" id="AFP" class="form-control" readonly />
                 <span asp-validation-for="AFP" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ARS" class="control-label"></label>
-                <input asp-for="ARS" class="form-control" />
+                <input asp-for="ARS" id="ARS" class="form-control" readonly />
                 <span asp-validation-for="ARS" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ARL" class="control-label"></label>
-                <input asp-for="ARL" class="form-control" />
+                <input asp-for="ARL" id="ARL" class="form-control" readonly />
                 <span asp-validation-for="ARL" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="TSS" class="control-label"></label>
-                <input asp-for="TSS" class="form-control" />
+                <input asp-for="TSS" id="TSS" class="form-control" readonly />
                 <span asp-validation-for="TSS" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="INFOTEP" class="control-label"></label>
-                <input asp-for="INFOTEP" class="form-control" />
+                <input asp-for="INFOTEP" id="INFOTEP" class="form-control" readonly />
                 <span asp-validation-for="INFOTEP" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Retirement" class="control-label"></label>
-                <input asp-for="Retirement" class="form-control" />
-                <span asp-validation-for="Retirement" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="NetPay" class="control-label"></label>
-                <input asp-for="NetPay" class="form-control" />
+                <input asp-for="NetPay" id="NetPay" class="form-control" readonly />
                 <span asp-validation-for="NetPay" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CreateDateTime" class="control-label"></label>
-                <input asp-for="CreateDateTime" class="form-control" />
-                <span asp-validation-for="CreateDateTime" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Editar" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-danger" asp-action="Index">Volver</a>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<script>
+    $(document).ready(function () {
+        var total = 0;
+        $(document).on("focusout", "input", (function () {
+            $isr = $("#ISR").val();
+            $netpay = $("#NetPay").val();
+            $gross = $("#GrossPay").val();
+            if ($gross != "") {
+                var ars = $gross * 0.0304;
+                $("#ARS").val(ars);
+                var afp = $gross * 0.0287;
+                $("#AFP").val(afp);
+                var tss = ars + afp;
+
+                $("#ARL").val($gross*0.0110);
+                $("#INFOTEP").val(($gross * 0.01));
+                $("#TSS").val(tss);
+                if ($isr == "")
+                    total = 0;
+                else
+                    total = $gross - $isr - tss;
+                $("#NetPay").val(total);
+            };
+        }));
+    });
+</script>
 }

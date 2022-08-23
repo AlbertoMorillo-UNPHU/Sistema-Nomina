@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -47,36 +48,30 @@ namespace SistemaNomina.Controllers
         [HttpPost]
         public async Task<IActionResult> GetListFiltered(ListingModels.ListingRequest request)
         {
-            // return filtered list
             return Ok(await new ListingService().GetListFiltered(request));
         }
         
-        // employee payments page
         [HttpGet("/[controller]/{empId}/[action]")]
         public async Task<IActionResult> Payments(long empId)
         {
             return View(empId);
         }
 
-        // add employee partial
         public IActionResult AddEmployeeDialog()
         {
             return View("Partials/AddEmployee");
         }
         
-        // record employee pay partial
         public IActionResult RecordPayDialog(long id)
         {
             return View("Partials/RecordPay", id);
         }
 
-        // GET: Employees
         public async Task<IActionResult> Index()
         {
             return View(await _context.Employees.ToListAsync());
         }
 
-        // GET: Employees/Details/5
         public async Task<IActionResult> Details(long? id)
         {
             if (id == null)
@@ -94,29 +89,27 @@ namespace SistemaNomina.Controllers
             return View(employee);
         }
 
-        // GET: Employees/Create
+        [Authorize(Roles ="ADMIN")]
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Employees/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,SSN,AFP,ISR,ARS,RetirementPercent,CreateDateTime")] Employee employee)
+        public async Task<IActionResult> Create([Bind("Id,FirstName,LastName,SSN,AFP,ISR,ARS,Direccion,FechaNacimiento,Puesto")] Employee employee)
         {
             if (ModelState.IsValid)
             {
+                employee.CreateDateTime = DateTime.Now;
+                employee.RetirementPercent = Convert.ToDecimal(2.87);
                 _context.Add(employee);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(employee);
         }
-
-        // GET: Employees/Edit/5
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Edit(long? id)
         {
             if (id == null)
@@ -132,12 +125,9 @@ namespace SistemaNomina.Controllers
             return View(employee);
         }
 
-        // POST: Employees/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("Id,FirstName,LastName,State,SSN,AFP,ISR,ARS,RetirementPercent,CreateDateTime")] Employee employee)
+        public async Task<IActionResult> Edit(long id, [Bind("Id,FirstName,LastName,State,SSN,AFP,ISR,ARS,RetirementPercent,CreateDateTime,Direccion,FechaNacimiento,Puesto")] Employee employee)
         {
             if (id != employee.Id)
             {
@@ -166,8 +156,7 @@ namespace SistemaNomina.Controllers
             }
             return View(employee);
         }
-
-        // GET: Employees/Delete/5
+        [Authorize(Roles = "ADMIN")]
         public async Task<IActionResult> Delete(long? id)
         {
             if (id == null)
@@ -185,7 +174,6 @@ namespace SistemaNomina.Controllers
             return View(employee);
         }
 
-        // POST: Employees/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long id)
