@@ -281,6 +281,32 @@ namespace SistemaNomina.Data.Migrations
                     b.ToTable("tEmployee","dbo");
                 });
 
+            modelBuilder.Entity("SistemaNomina.Models.HorasExtras", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<decimal>("CantidadMes")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("FechaCreacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("FechaEfectiva")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("PaymentId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PaymentId");
+
+                    b.ToTable("HorasExtras");
+                });
+
             modelBuilder.Entity("SistemaNomina.Models.Payment", b =>
                 {
                     b.Property<long>("Id")
@@ -426,6 +452,15 @@ namespace SistemaNomina.Data.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SistemaNomina.Models.HorasExtras", b =>
+                {
+                    b.HasOne("SistemaNomina.Models.Payment", "Payment")
+                        .WithMany("HorasExtras")
+                        .HasForeignKey("PaymentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

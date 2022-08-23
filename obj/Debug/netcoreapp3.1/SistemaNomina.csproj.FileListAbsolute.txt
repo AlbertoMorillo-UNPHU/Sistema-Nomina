@@ -220,3 +220,13 @@ C:\Users\amori\source\repos\SistemaNomina\obj\Debug\netcoreapp3.1\Razor\Areas\Id
 C:\Users\amori\source\repos\SistemaNomina\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\ShowRecoveryCodes.cshtml.g.cs
 C:\Users\amori\source\repos\SistemaNomina\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\Manage\_StatusMessage.cshtml.g.cs
 C:\Users\amori\source\repos\SistemaNomina\obj\Debug\netcoreapp3.1\Razor\Areas\Identity\Pages\Account\_StatusMessage.cshtml.g.cs
+C:\Users\amori\source\repos\SistemaNomina\obj\Debug\netcoreapp3.1\Razor\Views\HorasExtras\Create.cshtml.g.cs
+C:\Users\amori\source\repos\SistemaNomina\obj\Debug\netcoreapp3.1\Razor\Views\HorasExtras\Delete.cshtml.g.cs
+C:\Users\amori\source\repos\SistemaNomina\obj\Debug\netcoreapp3.1\Razor\Views\HorasExtras\Details.cshtml.g.cs
+C:\Users\amori\source\repos\SistemaNomina\obj\Debug\netcoreapp3.1\Razor\Views\HorasExtras\Edit.cshtml.g.cs
+C:\Users\amori\source\repos\SistemaNomina\obj\Debug\netcoreapp3.1\Razor\Views\HorasExtras\Index.cshtml.g.cs
+C:\Users\amori\source\repos\SistemaNomina\bin\Debug\netcoreapp3.1\Select.Html.dep
+C:\Users\amori\source\repos\SistemaNomina\bin\Debug\netcoreapp3.1\Select.HtmlToPdf.dll
+C:\Users\amori\source\repos\SistemaNomina\obj\Debug\netcoreapp3.1\Razor\Views\Employees\DetailsPrint.cshtml.g.cs
+C:\Users\amori\source\repos\SistemaNomina\obj\Debug\netcoreapp3.1\Razor\Views\HorasExtras\DetailsPrint.cshtml.g.cs
+C:\Users\amori\source\repos\SistemaNomina\obj\Debug\netcoreapp3.1\Razor\Views\Payments\DetailsPrint.cshtml.g.cs

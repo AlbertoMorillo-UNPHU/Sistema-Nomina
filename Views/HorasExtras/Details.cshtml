@@ -1,0 +1,47 @@
+﻿@model SistemaNomina.Models.HorasExtras
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Detalle Horas Extras</h1>
+<div class="card p-3">
+    <div class="print">
+        <h4>Horas Extras</h4>
+        <div class="text-right">
+            <button value="Convert PDF" id="btnPDF" class="btn btn-primary" onclick="@("window.location.href='" + @Url.Action("DetailsPrint", "HorasExtras", new { id=Model.Id}) + "'");"><i class="fa fa-print" aria-hidden="true"></i></button>
+        </div>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.CantidadMes)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.CantidadMes)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.FechaEfectiva)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FechaEfectiva)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.FechaCreacion)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.FechaCreacion)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Payment)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Payment.Id)
+            </dd>
+        </dl>
+    </div>
+    <div>
+        <a class="btn btn-info" asp-action="Edit" asp-route-id="@Model.Id">Editar</a>
+        <a class="btn btn-danger" asp-action="Index">Volver</a>
+    </div>
+</div>

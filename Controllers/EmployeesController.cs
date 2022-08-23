@@ -45,6 +45,23 @@ namespace SistemaNomina.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> DetailsPrint(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var employee = await _context.Employees
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (employee == null)
+            {
+                return NotFound();
+            }
+
+            return View(employee);
+        }
+
         [HttpPost]
         public async Task<IActionResult> GetListFiltered(ListingModels.ListingRequest request)
         {

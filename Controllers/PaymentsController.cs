@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Net.Http.Headers;
+using SelectPdf;
 using SistemaNomina.Data;
 using SistemaNomina.Models;
 
@@ -34,8 +37,29 @@ namespace SistemaNomina.Controllers
             }
 
             var payment = await _context.Payments
-                .Include(p => p.Employee)
+                .Include(p => p.Employee).Include(h => h.HorasExtras)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+            //var horas = payment.HorasExtras.Sum(h => h.CantidadMes);
+            ViewData["CantHE"] = 0;
+            ViewData["PagoHE"] = 0;
+            if (payment.HorasExtras.Any())
+            {
+                var horaPago = 0m;
+                var cm = payment.HorasExtras.Where(s=>s.FechaEfectiva.Month == DateTime.Now.Month).Sum(h => h.CantidadMes);
+                if (cm > 16)
+                {
+                    ViewData["CantHE"] = cm;
+                    horaPago = payment.NetPay / 160;
+                    ViewData["PagoHE"] = Math.Round(((horaPago * 1.35m) * cm) + payment.NetPay,2);
+                }else if (cm > 112)
+                {
+                    ViewData["CantHE"] = cm;
+                    horaPago = payment.NetPay / 160;
+                    ViewData["PagoHE"] = Math.Round(((horaPago * 2) * cm) + payment.NetPay,2);
+                }
+            }
+            
             if (payment == null)
             {
                 return NotFound();
@@ -43,6 +67,71 @@ namespace SistemaNomina.Controllers
 
             return View(payment);
         }
+
+        public async Task<IActionResult> DetailsPrint(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var payment = await _context.Payments
+                .Include(p => p.Employee).Include(h => h.HorasExtras)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            //var horas = payment.HorasExtras.Sum(h => h.CantidadMes);
+            ViewData["CantHE"] = 0;
+            ViewData["PagoHE"] = 0;
+            if (payment.HorasExtras.Any())
+            {
+                var horaPago = 0m;
+                var cm = payment.HorasExtras.Where(s => s.FechaEfectiva.Month == DateTime.Now.Month).Sum(h => h.CantidadMes);
+                if (cm > 16)
+                {
+                    ViewData["CantHE"] = cm;
+                    horaPago = payment.NetPay / 160;
+                    ViewData["PagoHE"] = Math.Round(((horaPago * 1.35m) * cm) + payment.NetPay, 2);
+                }
+                else if (cm > 112)
+                {
+                    ViewData["CantHE"] = cm;
+                    horaPago = payment.NetPay / 160;
+                    ViewData["PagoHE"] = Math.Round(((horaPago * 2) * cm) + payment.NetPay, 2);
+                }
+            }
+
+            if (payment == null)
+            {
+                return NotFound();
+            }
+
+            return View(payment);
+        }
+
+        [HttpPost]
+        public IActionResult GenerateDetallePDF(string html)
+        {
+            html = html.Replace("StrTag", "<").Replace("EndTag", ">").Replace("\n", "").Replace("\r", "");
+            html = html.Trim();
+            HtmlToPdf htmlToPdf = new HtmlToPdf();
+            PdfDocument pdfDocument = htmlToPdf.ConvertHtmlString(html);
+            byte[] pdf = pdfDocument.Save();
+            pdfDocument.Close();
+            MemoryStream ms = new MemoryStream();
+            ms.Write(pdf, 0, pdf.Length);
+            //fix
+            ms.Position = 0;
+
+            // also tried
+            //return File(ms, "application/pdf", mergedFileName);
+
+            return new FileStreamResult(ms, new MediaTypeHeaderValue("application/pdf"))
+            {
+                FileDownloadName = "DetallePago.pdf"
+            };
+        }
+
+
         [Authorize(Roles = "ADMIN,CONTABLE")]
         public IActionResult Create()
         {

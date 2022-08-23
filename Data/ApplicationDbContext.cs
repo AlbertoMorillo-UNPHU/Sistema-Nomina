@@ -24,5 +24,7 @@ namespace SistemaNomina.Data
         public ApplicationDbContext()
         {
         }
+
+        public DbSet<SistemaNomina.Models.HorasExtras> HorasExtras { get; set; }
     }
 }

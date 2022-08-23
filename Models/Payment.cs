@@ -35,5 +35,8 @@ namespace SistemaNomina.Models
         
         [DisplayName("Empleado")]
         public virtual Employee Employee { get; set; }
+
+        [DisplayName("Horas Extras Mes")]
+        public ICollection<HorasExtras> HorasExtras { get; set; }
     }
 }

@@ -1,96 +1,147 @@
 ﻿@model SistemaNomina.Models.Payment
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalle Salario";
 }
 
-<h1>Details</h1>
+<h1>Detalle</h1>
 
-<div>
-    <h4>Payment</h4>
+<div class="card p-3" id="pdfContainerHtml">
+    <h4>Pago del mes</h4>
+    <div class="text-right">
+        <button value="Convert PDF" id="btnPDF" class="btn btn-primary" onclick="@("window.location.href='" + @Url.Action("DetailsPrint", "Payments", new { id=Model.Id}) + "'");"><i class="fa fa-print" aria-hidden="true"></i></button>
+    </div>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-7">
             @Html.DisplayNameFor(model => model.GrossPay)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-5">
             @Html.DisplayFor(model => model.GrossPay)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-7">
             @Html.DisplayNameFor(model => model.PaymentPeriodFrom)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-5">
             @Html.DisplayFor(model => model.PaymentPeriodFrom)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-7">
             @Html.DisplayNameFor(model => model.PaymentPeriodTo)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PaymentPeriodTo)
+        <dd class="col-sm-5">
+            @if (Model.PaymentPeriodTo != null)
+            {
+                @Html.DisplayFor(model => model.PaymentPeriodTo, new { @class = "text-danger" })
+            }
+            else
+            {
+                <span class="text-success">PERMANECE</span>
+            }
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-7">
             @Html.DisplayNameFor(model => model.ISR)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-5">
             @Html.DisplayFor(model => model.ISR)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-7">
             @Html.DisplayNameFor(model => model.AFP)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-5">
             @Html.DisplayFor(model => model.AFP)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-7">
             @Html.DisplayNameFor(model => model.ARS)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-5">
             @Html.DisplayFor(model => model.ARS)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-7">
             @Html.DisplayNameFor(model => model.ARL)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-5">
             @Html.DisplayFor(model => model.ARL)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-7">
             @Html.DisplayNameFor(model => model.TSS)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-5">
             @Html.DisplayFor(model => model.TSS)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-7">
             @Html.DisplayNameFor(model => model.INFOTEP)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-5">
             @Html.DisplayFor(model => model.INFOTEP)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-7">
             @Html.DisplayNameFor(model => model.Retirement)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-5">
             @Html.DisplayFor(model => model.Retirement)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-7">
             @Html.DisplayNameFor(model => model.NetPay)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-5">
             @Html.DisplayFor(model => model.NetPay)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-7">
             @Html.DisplayNameFor(model => model.CreateDateTime)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-5">
             @Html.DisplayFor(model => model.CreateDateTime)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-7">
             @Html.DisplayNameFor(model => model.Employee)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-5">
             @Html.DisplayFor(model => model.Employee.NombreCompleto)
         </dd>
+        <dt class="col-sm-7">
+            @Html.DisplayNameFor(model => model.HorasExtras)
+        </dt>
+        <dd class="col-sm-5">
+            @ViewBag.CantHE
+        </dd>
+        <dt class="col-sm-7">
+            Pago Horas Extras
+        </dt>
+        <dd class="col-sm-5">
+            @ViewBag.PagoHE
+        </dd>
     </dl>
+
+    <div>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-info">Editar</a>
+        <a asp-action="Index" class="btn btn-danger">Volver</a>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-info">Editar</a>
-    <a asp-action="Index" class="btn btn-danger">Volver</a>
-</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        
+
+        function MyFunction() {
+            var sHtml = $("#pdfContainerHtml").html();
+            sHtml = sHtml.replace(/</g, "StrTag").replace(/>/g, "EndTag");
+            console.log(sHtml)
+            var data = {
+                html: sHtml,
+            };
+            $.ajax({
+                url: "../GenerateDetallePDF",
+                type: "POST",
+                dataType: "text/plain",
+                data: {
+                    html: sHtml
+                },
+                success: function (data) {
+                    console.log("Impreso detalle pago");
+                }
+            });
+            return false;
+        }
+    </script>
+}

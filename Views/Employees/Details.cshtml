@@ -8,6 +8,9 @@
 
 <div class="card p-3">
     <h4>Empleado</h4>
+    <div class="text-right">
+        <button value="Convert PDF" id="btnPDF" class="btn btn-primary" onclick="@("window.location.href='" + @Url.Action("DetailsPrint", "Employees", new { id=Model.Id}) + "'");"><i class="fa fa-print" aria-hidden="true"></i></button>
+    </div>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -77,8 +80,9 @@
             @Html.DisplayFor(model => model.CreateDateTime)
         </dd>
     </dl>
-</div>
-<div>
-    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model.Id">Editar</a> |
-    <a class="btn btn-danger" asp-action="Index">Volver</a>
+
+    <div>
+        <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model.Id">Editar</a>
+        <a class="btn btn-danger" asp-action="Index">Volver</a>
+    </div>
 </div>
